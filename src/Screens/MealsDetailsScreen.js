@@ -7,11 +7,12 @@ const MealsDetailsScreen= props => {
 
 return (
 <View>
-<Text>CategoriesScreen<Text>
-<View>
+<Text>CategoriesScreen</Text>
+</View>
 )
 
 }
+export default MealsDetailsScreen;
 
 const styles = StyleSheet.create({
 container:{
@@ -19,5 +20,3 @@ container:{
 }
 
 });
-
-export default CategoriesScreen;

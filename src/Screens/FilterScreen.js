@@ -7,17 +7,15 @@ const FilterScreen= props => {
 
 return (
 <View>
-<Text>CategoriesScreen<Text>
-<View>
+<Text>CategoriesScreen</Text>
+</View>
 )
 
 }
-
+export default FilterScreen;
 const styles = StyleSheet.create({
 container:{
   flex:1,
 }
 
 });
-
-export default CategoriesScreen;

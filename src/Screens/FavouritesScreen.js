@@ -7,11 +7,13 @@ const FavouritesScreen= props => {
 
 return (
 <View>
-<Text>CategoriesScreen<Text>
-<View>
+<Text>CategoriesScreen</Text>
+</View>
 )
 
 }
+export default FavouritesScreen;
+
 
 const styles = StyleSheet.create({
 container:{
@@ -19,5 +21,3 @@ container:{
 }
 
 });
-
-export default CategoriesScreen;
