@@ -8,12 +8,12 @@ import {
 } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
-import MealsStack from './src/navigation/MealsNavigation'
+import MyTabs from './src/navigation/MealsNavigation'
 
 const App = () => {
   return (
     <NavigationContainer>
-    <MealsStack/>
+    <MyTabs/>
      </NavigationContainer>
   );
 };

@@ -12,4 +12,14 @@ project:{
  then run react-native link
 
 
- 
+
+
+# to install react native vector icons
+make react-native.config.js in the root folder then put this code in the file
+
+module.exports = {
+    assets: ['react-native-vector-icons']
+};
+And finally run;
+
+yarn react-native link
