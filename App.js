@@ -8,13 +8,21 @@ import {
 } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
-import MyTabs from './src/navigation/MealsNavigation'
+import MainNavigator from './src/navigation/MealsNavigation'
+
+import { Provider } from "react-redux";
+import initialState from "reduxfiles/reducers/initialState";
+import configureStore from "reduxfiles/configureStore";
+const store = configureStore(initialState);
+
 
 const App = () => {
   return (
+      <Provider store={store}>
     <NavigationContainer>
-    <MyTabs/>
+    <MainNavigator/>
      </NavigationContainer>
+     </Provider>
   );
 };
 

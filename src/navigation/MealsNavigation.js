@@ -1,8 +1,9 @@
 import React from 'react';
 
 import { createStackNavigator } from '@react-navigation/stack';
-
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+
 
 import CategoriesScreen from '../Screens/CategoriesScreen';
 import MealsListScreen from '../Screens/MealsListScreen';
@@ -14,23 +15,42 @@ import FilterScreen from '../Screens/FilterScreen';
 import Colors from '../constants/Colors'
 import Icon from 'react-native-vector-icons/Ionicons';
 
+const screenOption={
+  headerStyle: {
+          backgroundColor: Platform.OS==='android'? Colors.primaryColor:'',
+        },
+  headerTintColor: Platform.OS==='android'? "#fff": Colors.primaryColor,
+  // headerTitleStyle: {
+  //   fontWeight: 'bold',
+  // },
+  }
 
 const Stack = createStackNavigator();
 
 const MealsStack= () =>{
   return (
-    <Stack.Navigator screenOptions={{
-      headerStyle: {
-              backgroundColor: Platform.OS==='android'? Colors.primaryColor:'',
-            },
-      headerTintColor: Platform.OS==='android'? "#fff": Colors.primaryColor,
-      // headerTitleStyle: {
-      //   fontWeight: 'bold',
-      // },
-      }}>
+    <Stack.Navigator screenOptions={screenOption}>
       <Stack.Screen name="Categories" component={CategoriesScreen} />
       <Stack.Screen name="Meals" component={MealsListScreen} />
       <Stack.Screen name="Details" component={MealsDetailsScreen} />
+    </Stack.Navigator>
+  );
+}
+
+
+const FavouriteStack= () =>{
+  return (
+    <Stack.Navigator screenOptions={screenOption}>
+      <Stack.Screen name="Favourites" component={FavouritesScreen} />
+      <Stack.Screen name="Details" component={MealsDetailsScreen} />
+    </Stack.Navigator>
+  );
+}
+
+const FilterStack= () =>{
+  return (
+    <Stack.Navigator screenOptions={screenOption}>
+      <Stack.Screen name="Filter" component={FilterScreen} />
     </Stack.Navigator>
   );
 }
@@ -41,20 +61,20 @@ const Tab = createMaterialBottomTabNavigator();
 
 function MyTabs() {
   return (
-    <Tab.Navigator  barStyle={{ backgroundColor: Colors.primaryColor }}>
+    <Tab.Navigator  activeColor="#e91e63" barStyle={{ backgroundColor: Colors.primaryColor }}>
       <Tab.Screen name="MealsStack" component={MealsStack}
       options={{
           tabBarLabel: 'Meals',
-          tabBarIcon: ({ color, size }) => (
-            <Icon name="ios-restaurant" color={"#fff"} size={25} />
+          tabBarIcon: ({focused}) => (
+            <Icon name="ios-restaurant" color={focused ?"#e91e63":"#fff"} size={25} />
           ),
         }} />
       <Tab.Screen name="Favourites"
-      component={FavouritesScreen}
+      component={FavouriteStack}
       options={{
           tabBarLabel: 'Favourites',
-          tabBarIcon: ({ color, size }) => (
-            <Icon name="ios-star" color={"#fff"} size={25} />
+          tabBarIcon: ({focused}) => (
+            <Icon name="ios-star" color={focused ?"#e91e63":"#fff"} size={25} />
           ),
         }}
        />
@@ -62,4 +82,15 @@ function MyTabs() {
   );
 }
 
-export default MyTabs;
+
+const Drawer = createDrawerNavigator();
+
+function MainNavigator() {
+  return (
+    <Drawer.Navigator>
+      <Drawer.Screen name="Meals" component={MyTabs} />
+      <Drawer.Screen name="Filter" component={FilterStack} />
+    </Drawer.Navigator>
+  );
+}
+export default MainNavigator;
