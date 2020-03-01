@@ -6,15 +6,14 @@ import {
   Alert,
 } from 'react-native';
 
-export const toggleFavoriteAction=(id)=>{
- return async (dispatch,getState) => {
 
- dispatch(toggleFavorite(id))
- }
 
-}
-
-const toggleFavorite = (id) => {
+ export const toggleFavorite = (id) => {
 
     return { type: types.TOGGLE_FAVORITE, mealId: id };
+};
+
+
+export const setFilters = filterSettings => {
+    return { type: types.SET_FILTERS, filters: filterSettings };
 };

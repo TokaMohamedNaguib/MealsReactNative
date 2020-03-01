@@ -1,9 +1,10 @@
-import React ,{useEffect} from 'react' ;
-import {Text,View,StyleSheet,Button,ScrollView,Image} from 'react-native';
-import {MEALS,CATEGORIES} from '../data/dummy-data';
+import React ,{useLayoutEffect} from 'react' ;
+import {Text,View,StyleSheet,Button,ScrollView,Image,Dimensions,Platform} from 'react-native';
+import {  useSelector, useDispatch } from 'react-redux'
 import Icon from 'react-native-vector-icons/Ionicons';
 import Colors from '../constants/Colors';
-import {  useSelector, useDispatch } from 'react-redux'
+const {height, width} = Dimensions.get('window');
+
 import * as  mealsActions from "reduxfiles/actions/meals";
 
 const ListItem = props => {
@@ -13,33 +14,37 @@ const ListItem = props => {
     </View>
   );
 };
-
-
 const MealsDetailsScreen= props => {
-const dispatch=useDispatch();
-const mealId = props.route.params.mealId;
-const selectedMeal = MEALS.find(meal => meal.id === mealId);
-const currentMealIsFavourite= useSelector(state=> state.meals.favoriteMeals.some(meal => meal.id===mealId))
-  useEffect(()=>{
 
-    let mealId = props.route.params.mealId;
-    let meal=MEALS.find((item)=>mealId===item.id);
-console.log("heelo");
-console.log(currentMealIsFavourite);
-    props.navigation.setOptions({
-      headerTitle: meal.title,
+
+const dispatch=useDispatch();
+const availableMeals = useSelector(state => state.meals.meals);
+const mealId = props.route.params.mealId;
+const selectedMeal = availableMeals.find(meal => meal.id === mealId);
+const currentMealIsFavourite= useSelector(state=> state.meals.favoriteMeals.some(meal => meal.id===mealId))
+
+
+useLayoutEffect(()=>{
+props.navigation.setOptions({
+      headerTitle: selectedMeal.title,
       headerRight: () => (
           <Icon name="ios-star"
-          size={25} color={currentMealIsFavourite?Colors.accentColor:"#fff"}
-          style={{marginLeft:10}}
-          onPress={()=>{dispatch(mealsActions.toggleFavoriteAction(mealId))  }}
+          size={25}
+          color={Platform.OS === 'android' ? currentMealIsFavourite?Colors.accentColor:"#fff" :  currentMealIsFavourite?Colors.accentColor:Colors.primaryColor}
+          style={{marginRight:(3*width)/100}}
+          onPress={()=>{dispatch(mealsActions.toggleFavorite(mealId))  }}
 
-           />)
+           />),
+           headerTitleStyle:{
+             fontFamily:"OpenSans-Bold",
+             width:(60*width)/100,
+
+           }
 
         });
 
 
-  },[currentMealIsFavourite]);
+  },[currentMealIsFavourite,selectedMeal,props.navigation]);
 
 
 

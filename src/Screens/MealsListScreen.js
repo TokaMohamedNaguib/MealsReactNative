@@ -1,31 +1,41 @@
-import React, {useEffect} from 'react' ;
-import {Text,View,StyleSheet,Platform,FlatList} from 'react-native';
-import {MEALS,CATEGORIES} from '../data/dummy-data'
+import React, {useLayoutEffect} from 'react' ;
+import {Text,View,StyleSheet,Platform,FlatList,Dimensions} from 'react-native';
+import { useSelector } from 'react-redux';
+import {CATEGORIES} from '../data/dummy-data'
 import Colors from '../constants/Colors'
+const {height, width} = Dimensions.get('window');
 import MealList from '../components/MealList'
 
 
 
 const MealsListScreen = (props) => {
+  const availableMeals = useSelector(state => state.meals.filteredMeals);
+  let categId = props.route.params.categId;
+  let mealsList=availableMeals.filter((meal)=> {
+       return(meal.categoryIds.indexOf(categId)>=0)});
 
-  useEffect(()=>{
 
-    let categId = props.route.params.categId;
+  useLayoutEffect(()=>{
+
+
     let categ=CATEGORIES.filter((item)=>categId===item.id);
 
 
     props.navigation.setOptions({
       headerTitle: categ[0].title,
+      headerTitleStyle:{
+        fontFamily:"OpenSans-Bold",
+        width:(60*width)/100,
+
+      }
 
        });
 
 
-  },[]);
+  },[  props.navigation,categId]);
 
-      let categId = props.route.params.categId;
-      let mealsList=MEALS.filter((meal)=> {
-           return(meal.categoryIds.indexOf(categId)>=0)});
-           console.log(mealsList);
+
+
 
 
 return (

@@ -1,9 +1,11 @@
-import React ,{useState,useLayoutEffect} from 'react' ;
-import { View, Text, StyleSheet, Switch, Platform } from 'react-native';
+import React ,{useState,useLayoutEffect,useCallback} from 'react' ;
+import { View, Text, StyleSheet, Switch, Platform ,Dimensions} from 'react-native';
 
 import Colors from '../constants/Colors';
 import Icon from 'react-native-vector-icons/Ionicons';
-
+import { useDispatch } from 'react-redux';
+import { setFilters } from '../store/actions/meals';
+const {height, width} = Dimensions.get('window');
 
 const FilterSwitch = props => {
   return (
@@ -24,20 +26,54 @@ const FilterScreen= props => {
   const [isLactoseFree, setIsLactoseFree] = useState(false);
   const [isVegan, setIsVegan] = useState(false);
   const [isVegetarian, setIsVegetarian] = useState(false);
-  useLayoutEffect(() => {
+  const dispatch = useDispatch();
+
+
+const saveFilters = useCallback(() => {
+      const appliedFilters = {
+        glutenFree: isGlutenFree,
+        lactoseFree: isLactoseFree,
+        vegan: isVegan,
+        vegetarian: isVegetarian
+      };
+
+      dispatch(setFilters(appliedFilters));
+    }, [isGlutenFree, isLactoseFree, isVegan, isVegetarian, dispatch]);
+
+
+
+useLayoutEffect(() => {
 
      props.navigation.setOptions({
-
          headerTitle: "Filter",
-           headerLeft: () => (
-               <Icon name="ios-menu" size={25} color="#fff" style={{marginLeft:10}} onPress={()=>{ props.navigation.toggleDrawer()}}/>)
+         headerLeft: () => (
+               <Icon
+               name="ios-menu"
+               size={25}
+               color={Platform.OS==='android'?"#fff":''}
+               style={{marginLeft:(3*width)/100}}
+               onPress={()=>{ props.navigation.toggleDrawer()}}/>),
 
+        headerRight: () => (
+        <Icon
+          color={Platform.OS==='android'?"#fff":''}
+          size={25}
+          style={{marginRight:(3*width)/100}}
+          name="ios-save"
+          onPress={saveFilters}
+        />
 
+    ),
+    headerTitleStyle:{
+      fontFamily:"OpenSans-Bold",
+      width:(60*width)/100,
 
-
+    }
 
      })
-   }, [props.navigation]);
+   }, [props.navigation, saveFilters]);
+
+
 return (
   <View style={styles.screen}>
        <Text style={styles.title}>Available Filters / Restrictions</Text>

@@ -4,7 +4,9 @@ import initialState from "./initialState";
 
 export default function(state = initialState.meals, action) {
     switch (action.type) {
-        case types.TOGGLE_FAVORITE:
+
+
+    case types.TOGGLE_FAVORITE:
 
     const existingIndex = state.favoriteMeals.findIndex(
       meal => meal.id === action.mealId
@@ -18,9 +20,27 @@ export default function(state = initialState.meals, action) {
       return { ...state, favoriteMeals: state.favoriteMeals.concat(meal) };
     }
 
-        default:
-            return {
-                ...state
-            };
+    case types.SET_FILTERS:
+      const appliedFilters = action.filters;
+      console.log(appliedFilters);
+      const updatedFilteredMeals = state.meals.filter(meal => {
+        if (appliedFilters.glutenFree && !meal.isGlutenFree) {
+          return false;
+        }
+        if (appliedFilters.lactoseFree && !meal.isLactoseFree) {
+          return false;
+        }
+        if (appliedFilters.vegetarian && !meal.isVegetarian) {
+          return false;
+        }
+        if (appliedFilters.vegan && !meal.isVegan) {
+          return false;
+        }
+        return true;
+      });
+      return { ...state, filteredMeals: updatedFilteredMeals };
+
+      default:
+            return {...state};
     }
 }
